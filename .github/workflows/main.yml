@@ -1,0 +1,26 @@
+
+name: Gerar instalador DL DESIGN STUDIO
+
+on:
+  workflow_dispatch:
+
+jobs:
+  gerar-rbz:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar arquivos do projeto
+        uses: actions/checkout@v4
+
+      - name: Criar instalador RBZ
+        run: |
+          mkdir -p dist
+          zip -r dist/DL_Design_Studio.rbz \
+            dl_design_studio.rb \
+            dl_design_studio/
+
+      - name: Disponibilizar instalador
+        uses: actions/upload-artifact@v4
+        with:
+          name: DL-Design-Studio-RBZ
+          path: dist/DL_Design_Studio.rbz
