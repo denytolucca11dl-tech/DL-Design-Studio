@@ -75,7 +75,9 @@ module DLDesignStudio
 
     @dialog.show
   end
-
+  def self.radius_to_inches(radius_mm)
+    radius_mm.to_f.mm
+  end
   def self.selection_info(selection)
     {
       total: selection.length,
