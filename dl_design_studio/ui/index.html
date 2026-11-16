@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DL Design Studio</title>
+<style>
+:root{--bg:#17191d;--panel:#22252b;--panel2:#2b2f36;--gold:#c49a45;--text:#f3f0e8;--muted:#a9adb5;--line:#3b4049}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px 'Segoe UI',Arial,sans-serif}
+header{padding:22px 26px;background:linear-gradient(120deg,#242830,#17191d);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+.brand{font-size:22px;font-weight:800;letter-spacing:1.5px}.brand span{color:var(--gold)}.sub{color:var(--muted);font-size:11px;letter-spacing:1.2px;margin-top:5px}
+.version{border:1px solid #6d572e;color:#e5c47f;border-radius:20px;padding:6px 11px;font-size:11px}
+main{padding:22px 26px}.intro{margin-bottom:20px}.intro h1{font-size:20px;margin:0 0 6px}.intro p{color:var(--muted);margin:0;line-height:1.5}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:17px;min-height:145px;display:flex;flex-direction:column;gap:10px}
+.card-top{display:flex;align-items:center;gap:12px}.icon{width:39px;height:39px;border-radius:10px;background:#393329;color:#e8c477;display:grid;place-items:center;font-size:19px}
+h2{font-size:15px;margin:0}.desc{color:var(--muted);font-size:12px;line-height:1.45;flex:1}
+button{border:0;border-radius:7px;background:var(--gold);color:#171717;font-weight:700;padding:9px 12px;cursor:pointer;text-align:center}
+button:disabled{background:#454951;color:#b7bac0;cursor:not-allowed}
+.status{font-size:10px;color:#e5c47f;text-transform:uppercase;letter-spacing:.8px}
+.round-panel{margin-top:18px;padding:18px;background:var(--panel);border:1px solid #806633;border-radius:12px}.round-panel[hidden]{display:none}.hint{color:var(--muted);line-height:1.5}.settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.settings-grid label{display:flex;flex-direction:column;gap:7px;color:var(--muted);font-size:12px}.settings-grid input,.settings-grid select{width:100%;padding:10px;border-radius:7px;border:1px solid var(--line);background:#17191d;color:var(--text)}.actions{margin-top:15px}.result{margin-top:13px;padding:12px;border-radius:8px;background:#30343b;color:var(--muted);line-height:1.5}.result.ok{border:1px solid #557b5c;color:#c5e2c9}.result.error{border:1px solid #8b4b4b;color:#f0c2c2}.secondary{background:#454951;color:#f3f0e8}.selection{margin-top:18px;padding:15px;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+.selection-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.selection-head strong{font-size:13px}
+.metrics{display:flex;gap:18px;flex-wrap:wrap;color:var(--muted);font-size:12px}.metrics b{color:var(--text)}
+footer{padding:15px 26px;color:#858a94;font-size:10px;border-top:1px solid var(--line);margin-top:20px}
+@media(max-width:650px){.grid,.settings-grid{grid-template-columns:1fr}header,main{padding-left:16px;padding-right:16px}}
+</style>
+</head>
+<body>
+<header><div><div class="brand">DL <span>DESIGN STUDIO</span></div><div class="sub">FERRAMENTAS PROFISSIONAIS PARA SKETCHUP</div></div><div class="version">DESENVOLVIMENTO 0.2.0</div></header>
+<main>
+<section class="intro"><h1>Central de ferramentas</h1><p>Uma extensão integrada para modelagem, materiais e documentação técnica. Selecione uma ferramenta para acompanhar seu desenvolvimento.</p></section>
+<section class="grid">
+ <article class="card"><div class="card-top"><div class="icon">◒</div><div><h2>DL Round Corner</h2><div class="status">Primeira etapa disponível</div></div></div><div class="desc">Configurar arredondamentos e chanfros, selecionar arestas manualmente ou trabalhar com grupos e componentes.</div><button onclick="openRoundCorner()">Abrir ferramenta</button></article>
+ <article class="card"><div class="card-top"><div class="icon">⌂</div><div><h2>DL Roof Generator</h2><div class="status">Planejado para próxima etapa</div></div></div><div class="desc">Gerar coberturas com inclinação, beirais, cumeeiras e configuração de telhas.</div><button disabled>Em desenvolvimento</button></article>
+ <article class="card"><div class="card-top"><div class="icon">▥</div><div><h2>DL Timber</h2><div class="status">Planejado para próxima etapa</div></div></div><div class="desc">Criar estrutura de madeira: terças, caibros, ripas e peças de apoio.</div><button disabled>Em desenvolvimento</button></article>
+ <article class="card"><div class="card-top"><div class="icon">▦</div><div><h2>DL Cladding</h2><div class="status">Planejado para próxima etapa</div></div></div><div class="desc">Gerar revestimentos, painéis ripados, pisos e paginação configurável.</div><button disabled>Em desenvolvimento</button></article>
+ <article class="card"><div class="card-top"><div class="icon">▧</div><div><h2>DL Materials</h2><div class="status">Planejado para próxima etapa</div></div></div><div class="desc">Biblioteca de MDF, madeira, pedras, porcelanatos, vidros e acabamentos.</div><button disabled>Em desenvolvimento</button></article>
+ <article class="card"><div class="card-top"><div class="icon">⌗</div><div><h2>DL Detailing</h2><div class="status">Planejado para próxima etapa</div></div></div><div class="desc">Cotas, vistas, documentação e detalhamento técnico dos projetos.</div><button disabled>Em desenvolvimento</button></article>
+</section>
+<section class="round-panel" id="roundPanel" hidden>
+ <div class="selection-head"><strong>DL Round Corner</strong><button class="secondary" onclick="closeRoundCorner()">Voltar</button></div>
+ <p class="hint">Configure a operação e analise a seleção antes de modificar qualquer geometria.</p>
+ <div class="settings-grid">
+  <label>Modo de seleção<select id="rcMode"><option value="manual">Manual — arestas selecionadas</option><option value="object">Objeto inteiro — grupo/componente</option></select></label>
+  <label>Acabamento<select id="rcKind"><option value="round">Arredondar</option><option value="chamfer">Chanfrar</option></select></label>
+  <label>Raio (mm)<input id="rcRadius" type="number" min="0.1" step="0.5" value="3"></label>
+  <label>Segmentos<input id="rcSegments" type="number" min="1" max="24" step="1" value="6"></label>
+ </div>
+ <div class="actions"><button onclick="analyzeRoundCorner()">Analisar seleção</button></div>
+ <div class="result" id="rcResult">A análise não altera o modelo. A criação da geometria será implementada após validar esta etapa.</div>
+ </section>
+<section class="selection"><div class="selection-head"><strong>Seleção atual do SketchUp</strong><button onclick="refreshSelection()">Atualizar</button></div><div class="metrics" id="metrics">Clique em atualizar para consultar a seleção atual.</div></section>
+</main>
+<footer>DL DESIGN STUDIO • SketchUp 2024+ • Versão 0.2.0: interface e análise de seleção do Round Corner. A geometria ainda não é modificada.</footer>
+<script>
+function refreshSelection(){if(window.sketchup&&sketchup.get_selection_info){sketchup.get_selection_info();}}
+function openRoundCorner(){document.getElementById('roundPanel').hidden=false;document.getElementById('roundPanel').scrollIntoView({behavior:'smooth',block:'start'});refreshSelection();}
+function closeRoundCorner(){document.getElementById('roundPanel').hidden=true;}
+function analyzeRoundCorner(){
+ const settings={mode:document.getElementById('rcMode').value,kind:document.getElementById('rcKind').value,radius_mm:document.getElementById('rcRadius').value,segments:document.getElementById('rcSegments').value};
+ if(window.sketchup&&sketchup.analyze_round_corner){sketchup.analyze_round_corner(JSON.stringify(settings));}
+}
+
+window.DLStudio={showRoundAnalysis:function(r){const el=document.getElementById('rcResult');el.className='result '+(r.valid?'ok':'error');el.textContent=r.message+(r.valid?' | Arestas selecionadas: '+r.selected_edges+' | Grupos/componentes: '+r.selected_objects:'');},
+updateSelection:function(s){document.getElementById('metrics').innerHTML=
+'<span>Entidades: <b>'+s.total+'</b></span><span>Faces: <b>'+s.faces+'</b></span><span>Arestas: <b>'+s.edges+'</b></span><span>Grupos: <b>'+s.groups+'</b></span><span>Componentes: <b>'+s.components+'</b></span>';}}
+</script>
+</body></html>

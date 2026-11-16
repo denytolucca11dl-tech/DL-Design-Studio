@@ -1,0 +1,19 @@
+DL DESIGN STUDIO — Versão 0.2.0
+Compatibilidade pretendida: SketchUp 2024 ou superior (Windows)
+
+INSTALAÇÃO/ATUALIZAÇÃO
+1. No SketchUp, abra Extensões > Gerenciador de extensões.
+2. Instale o arquivo DL_Design_Studio_0_2.rbz.
+3. Se o SketchUp perguntar sobre substituir a versão anterior, confirme.
+4. Abra Extensões > DL Design Studio > Abrir painel.
+
+NOVIDADES 0.2.0
+- Painel inicial preservado.
+- DL Round Corner agora possui interface de configuração.
+- Modos: seleção manual de arestas ou objeto inteiro (grupo/componente).
+- Tipos: arredondar ou chanfrar.
+- Raio em milímetros e segmentos configuráveis.
+- Análise da seleção com validação dos parâmetros.
+
+LIMITAÇÃO IMPORTANTE
+Esta versão ainda NÃO cria arredondamentos nem chanfros. A análise apenas valida a seleção e não altera a geometria. A geração geométrica será implementada e testada em uma etapa posterior.
