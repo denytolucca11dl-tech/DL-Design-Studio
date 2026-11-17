@@ -195,6 +195,26 @@ module DLDesignStudio
     end
   end
  
+  def self.round_corner_arc_points(center, axis_u, axis_v, radius, segments)
+    raise ArgumentError, 'Raio inválido.' unless radius.positive?
+    raise ArgumentError, 'Segmentos inválidos.' unless (1..24).cover?(segments)
+
+    u = axis_u.normalize
+    v = axis_v.normalize
+
+    raise ArgumentError, 'Eixos não perpendiculares.' if u.dot(v).abs > 0.001
+
+    (0..segments).map do |i|
+      angle = (Math::PI / 2.0) * i / segments
+
+      Geom::Point3d.new(
+        center.x + radius * (u.x * Math.cos(angle) + v.x * Math.sin(angle)),
+        center.y + radius * (u.y * Math.cos(angle) + v.y * Math.sin(angle)),
+        center.z + radius * (u.z * Math.cos(angle) + v.z * Math.sin(angle))
+      )
+    end
+  end
+
   def self.selection_info(selection)
     {
       total: selection.length,
