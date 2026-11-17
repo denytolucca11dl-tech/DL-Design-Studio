@@ -215,6 +215,41 @@ module DLDesignStudio
     end
   end
 
+  def self.add_mesh_surface(entities, point_grid, outward_direction)
+    return 0 if point_grid.length < 2
+
+    columns = point_grid.first.length
+    return 0 if columns < 2
+
+    unless point_grid.all? { |row| row.length == columns }
+      raise ArgumentError, 'A malha possui linhas incompatíveis.'
+    end
+
+    faces_created = 0
+
+    (0...(point_grid.length - 1)).each do |i|
+      (0...(columns - 1)).each do |j|
+        p00 = point_grid[i][j]
+        p10 = point_grid[i + 1][j]
+        p01 = point_grid[i][j + 1]
+        p11 = point_grid[i + 1][j + 1]
+
+        face1 = add_mesh_triangle(
+          entities, p00, p10, p11, outward_direction
+        )
+
+        face2 = add_mesh_triangle(
+          entities, p00, p11, p01, outward_direction
+        )
+
+        faces_created += 1 if face1
+        faces_created += 1 if face2
+      end
+    end
+
+    faces_created
+  end
+
   def self.selection_info(selection)
     {
       total: selection.length,
