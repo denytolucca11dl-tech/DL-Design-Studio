@@ -146,22 +146,7 @@ module DLDesignStudio
   end
 
 
-    faces = object.entities.grep(Sketchup::Face)
-    edges = object.entities.grep(Sketchup::Edge)
-
-    if faces.length != 6 || edges.length != 12
-      return {
-        valid: false,
-        message: 'O grupo deve conter 6 faces e 12 arestas.'
-      }
-    end
-
-    {
-      valid: true,
-      message: 'Bloco candidato identificado para validação geométrica.'
-    }
-  end
-
+ 
   def self.selection_info(selection)
     {
       total: selection.length,
