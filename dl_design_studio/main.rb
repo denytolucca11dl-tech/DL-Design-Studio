@@ -158,6 +158,37 @@ module DLDesignStudio
 
 
 
+  def self.validate_round_radius(object, radius_mm)
+    bounds = object.definition.bounds
+
+    dimensions = [
+      bounds.width.to_f,
+      bounds.height.to_f,
+      bounds.depth.to_f
+    ]
+
+    radius = radius_to_inches(radius_mm)
+
+    if dimensions.any? { |dimension| dimension <= 0 }
+      return {
+        valid: false,
+        message: 'O bloco possui dimensões inválidas.'
+      }
+    end
+
+    if radius * 2 >= dimensions.min
+      return {
+        valid: false,
+        message: 'O raio deve ser menor que a metade da menor dimensão do bloco.'
+      }
+    end
+
+    {
+      valid: true,
+      message: 'Raio aprovado para arredondamento.'
+    }
+  end
+
   def self.rounded_coordinate(value, minimum, maximum, radius)
     inner_min = minimum + radius
     inner_max = maximum - radius
