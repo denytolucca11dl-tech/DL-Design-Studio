@@ -52,10 +52,21 @@ module DLDesignStudio
           errors << 'Selecione um grupo ou componente.' if objects.empty?
         end
         
-        if mode == 'object' && objects.length == 1
-          validation = validate_rectangular_block(objects.first)
-          errors << validation[:message] unless validation[:valid]
+       
+        if mode == 'object'
+          if objects.length != 1
+            errors << 'Selecione exatamente um grupo retangular.'
+          else
+            validation = validate_rectangular_block(objects.first)
+            errors << validation[:message] unless validation[:valid]
+
+            if validation[:valid] && radius.positive?
+              radius_validation = validate_round_radius(objects.first, radius)
+              errors << radius_validation[:message] unless radius_validation[:valid]
+            end
+          end
         end
+
 
         summary = {
           valid: errors.empty?, mode: mode, kind: kind, radius_mm: radius,
