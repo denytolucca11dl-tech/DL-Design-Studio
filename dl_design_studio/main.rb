@@ -331,6 +331,80 @@ module DLDesignStudio
     values
   end
 
+  def self.generate_rounded_box(object, radius_mm, segments)
+    validation = validate_rectangular_block(object)
+    raise ArgumentError, validation[:message] unless validation[:valid]
+
+    radius_validation = validate_round_radius(object, radius_mm)
+    raise ArgumentError, radius_validation[:message] unless radius_validation[:valid]
+
+    raise ArgumentError, 'Segmentos inválidos.' unless (1..24).cover?(segments)
+
+    identity = Geom::Transformation.new
+    unless object.transformation.to_a.zip(identity.to_a).all? { |a, b|
+      (a - b).abs < 0.000001
+    }
+      raise ArgumentError, 'Nesta versão de teste, utilize um grupo sem transformações.'
+    end
+
+    model = Sketchup.active_model
+    bounds = object.definition.bounds
+    radius = radius_to_inches(radius_mm)
+
+    xs = rounded_box_axis_samples(
+      bounds.min.x, bounds.max.x, radius, segments
+    )
+    ys = rounded_box_axis_samples(
+      bounds.min.y, bounds.max.y, radius, segments
+    )
+    zs = rounded_box_axis_samples(
+      bounds.min.z, bounds.max.z, radius, segments
+    )
+
+    model.start_operation('DL Round Corner', true)
+
+    begin
+      result = model.active_entities.add_group
+      result.name = 'DL Round Corner - Teste'
+      entities = result.entities
+
+      surfaces = [
+        [:x, bounds.min.x, ys, zs, Geom::Vector3d.new(-1, 0, 0)],
+        [:x, bounds.max.x, ys, zs, Geom::Vector3d.new(1, 0, 0)],
+        [:y, bounds.min.y, xs, zs, Geom::Vector3d.new(0, -1, 0)],
+        [:y, bounds.max.y, xs, zs, Geom::Vector3d.new(0, 1, 0)],
+        [:z, bounds.min.z, xs, ys, Geom::Vector3d.new(0, 0, -1)],
+        [:z, bounds.max.z, xs, ys, Geom::Vector3d.new(0, 0, 1)]
+      ]
+
+      surfaces.each do |axis, fixed, rows, columns, normal|
+        grid = rows.map do |a|
+          columns.map do |b|
+            x, y, z = case axis
+                      when :x then [fixed, a, b]
+                      when :y then [a, fixed, b]
+                      else [a, b, fixed]
+                      end
+
+            rounded_box_surface_point(x, y, z, bounds, radius)
+          end
+        end
+
+        add_mesh_surface(entities, grid, normal)
+      end
+
+      unless result.manifold?
+        raise RuntimeError, 'A malha gerada não formou um sólido fechado.'
+      end
+
+      model.commit_operation
+      result
+    rescue StandardError
+      model.abort_operation
+      raise
+    end
+  end
+
   def self.selection_info(selection)
     {
       total: selection.length,
