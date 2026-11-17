@@ -157,6 +157,43 @@ module DLDesignStudio
   end
 
 
+
+  def self.rounded_coordinate(value, minimum, maximum, radius)
+    inner_min = minimum + radius
+    inner_max = maximum - radius
+
+    center = [[value, inner_min].max, inner_max].min
+    offset = value - center
+
+    [center, offset]
+  end
+
+  def self.rounded_box_point(x, y, z, bounds, radius)
+    cx, dx = rounded_coordinate(
+      x, bounds.min.x, bounds.max.x, radius
+    )
+
+    cy, dy = rounded_coordinate(
+      y, bounds.min.y, bounds.max.y, radius
+    )
+
+    cz, dz = rounded_coordinate(
+      z, bounds.min.z, bounds.max.z, radius
+    )
+
+    distance = Math.sqrt(dx * dx + dy * dy + dz * dz)
+
+    if distance > 0
+      scale = radius / distance
+      Geom::Point3d.new(
+        cx + dx * scale,
+        cy + dy * scale,
+        cz + dz * scale
+      )
+    else
+      Geom::Point3d.new(cx, cy, cz)
+    end
+  end
  
   def self.selection_info(selection)
     {
