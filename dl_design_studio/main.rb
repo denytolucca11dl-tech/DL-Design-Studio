@@ -51,6 +51,12 @@ module DLDesignStudio
         else
           errors << 'Selecione um grupo ou componente.' if objects.empty?
         end
+        
+        if mode == 'object' && objects.length == 1
+          validation = validate_rectangular_block(objects.first)
+          errors << validation[:message] unless validation[:valid]
+        end
+
         summary = {
           valid: errors.empty?, mode: mode, kind: kind, radius_mm: radius,
           segments: segments, selected_edges: edges.length,
