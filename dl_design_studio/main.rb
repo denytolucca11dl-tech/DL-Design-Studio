@@ -79,6 +79,7 @@ module DLDesignStudio
     radius_mm.to_f.mm
   end
   
+  
   def self.validate_rectangular_block(object)
     unless object.is_a?(Sketchup::Group)
       return {
@@ -86,6 +87,58 @@ module DLDesignStudio
         message: 'Selecione um grupo retangular.'
       }
     end
+
+    entities = object.entities
+    faces = entities.grep(Sketchup::Face)
+    edges = entities.grep(Sketchup::Edge)
+
+    unless faces.length == 6 && edges.length == 12
+      return {
+        valid: false,
+        message: 'O bloco precisa ter 6 faces e 12 arestas.'
+      }
+    end
+
+    unless faces.all? { |face|
+      face.loops.length == 1 &&
+      face.outer_loop.vertices.length == 4
+    }
+      return {
+        valid: false,
+        message: 'Todas as faces precisam ter 4 lados.'
+      }
+    end
+
+    tolerance = 0.001
+
+    rectangular = faces.all? do |face|
+      vertices = face.outer_loop.vertices.map(&:position)
+
+      vectors = 4.times.map do |i|
+        vertices[i].vector_to(vertices[(i + 1) % 4])
+      end
+
+      vectors.all? { |v| v.length > tolerance } &&
+        4.times.all? do |i|
+          a = vectors[i].normalize
+          b = vectors[(i + 1) % 4].normalize
+          a.dot(b).abs < tolerance
+        end
+    end
+
+    unless rectangular
+      return {
+        valid: false,
+        message: 'O bloco possui faces fora de esquadro.'
+      }
+    end
+
+    {
+      valid: true,
+      message: 'Bloco retangular aprovado na validação inicial.'
+    }
+  end
+
 
     faces = object.entities.grep(Sketchup::Face)
     edges = object.entities.grep(Sketchup::Edge)
