@@ -11,7 +11,10 @@ jobs:
     steps:
       - name: Baixar arquivos do projeto
         uses: actions/checkout@v4
-
+      - name: Verificar sintaxe Ruby
+        run: |
+          ruby -c dl_design_studio.rb
+          ruby -c dl_design_studio/main.rb
       - name: Criar instalador RBZ
         run: |
           mkdir -p dist
