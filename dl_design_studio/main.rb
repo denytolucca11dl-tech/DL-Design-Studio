@@ -364,7 +364,7 @@ module DLDesignStudio
     model.start_operation('DL Round Corner', true)
 
     begin
-     result = object.parent.entities.add_group
+    result = model.active_entities.add_group
       result.name = 'DL Round Corner - Teste'
       entities = result.entities
 
