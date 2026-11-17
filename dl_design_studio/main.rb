@@ -300,6 +300,37 @@ module DLDesignStudio
     faces_created
   end
 
+  def self.rounded_box_surface_point(x, y, z, bounds, radius)
+    rounded_box_point(x, y, z, bounds, radius)
+  end
+
+  def self.rounded_box_axis_samples(minimum, maximum, radius, segments)
+    raise ArgumentError, 'Raio inválido.' unless radius.positive?
+
+    inner_min = minimum + radius
+    inner_max = maximum - radius
+
+    raise ArgumentError, 'Raio maior que o permitido.' if inner_min >= inner_max
+
+    values = [minimum]
+
+    (1...segments).each do |i|
+      angle = (Math::PI / 2.0) * i / segments
+      values << inner_min - radius * Math.cos(angle)
+    end
+
+    values << inner_min
+    values << inner_max
+
+    (1...segments).each do |i|
+      angle = (Math::PI / 2.0) * i / segments
+      values << inner_max + radius * Math.sin(angle)
+    end
+
+    values << maximum
+    values
+  end
+
   def self.selection_info(selection)
     {
       total: selection.length,
