@@ -76,6 +76,25 @@ module DLDesignStudio
     @dialog.show
   end
 
+  def self.add_mesh_triangle(entities, p1, p2, p3, outward_direction)
+    tolerance = 0.000001
+
+    ab = p1.vector_to(p2)
+    ac = p1.vector_to(p3)
+    normal = ab.cross(ac)
+
+    return nil if normal.length <= tolerance
+
+    face = entities.add_face(p1, p2, p3)
+    return nil unless face
+
+    if face.normal.dot(outward_direction) < 0
+      face.reverse!
+    end
+
+    face
+  end
+
   def self.selection_info(selection)
     {
       total: selection.length,
