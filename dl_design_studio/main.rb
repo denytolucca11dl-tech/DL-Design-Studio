@@ -78,6 +78,31 @@ module DLDesignStudio
   def self.radius_to_inches(radius_mm)
     radius_mm.to_f.mm
   end
+  
+  def self.validate_rectangular_block(object)
+    unless object.is_a?(Sketchup::Group)
+      return {
+        valid: false,
+        message: 'Selecione um grupo retangular.'
+      }
+    end
+
+    faces = object.entities.grep(Sketchup::Face)
+    edges = object.entities.grep(Sketchup::Edge)
+
+    if faces.length != 6 || edges.length != 12
+      return {
+        valid: false,
+        message: 'O grupo deve conter 6 faces e 12 arestas.'
+      }
+    end
+
+    {
+      valid: true,
+      message: 'Bloco candidato identificado para validação geométrica.'
+    }
+  end
+
   def self.selection_info(selection)
     {
       total: selection.length,
